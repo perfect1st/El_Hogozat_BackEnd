@@ -17,12 +17,9 @@ db.authenticate().then(()=>{
 const clientsRouter = require("./routes/clients");
 const branchesRouter = require("./routes/branches");
 
-
 //////////////////////////////////////////////// Use Route
 app.use(`${process.env.API_URL}/clients` , clientsRouter)
 app.use(`${process.env.API_URL}/branches` , branchesRouter)
-
-
 
 ///////////////////////////////////////////////// Listen Server
 app.listen(process.env.PORT , ()=>{

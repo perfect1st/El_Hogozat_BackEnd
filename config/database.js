@@ -1,10 +1,16 @@
 const Sequelize = require("sequelize");
 require("dotenv/config");
 
-module.exports = new Sequelize('ladycareyear012024', 'sa', '123456', {
-  host: 'localhost',
+module.exports = new Sequelize('ladycareyear012024', 'sa', '123456aA@', {
+  host: '158.220.90.76',
   dialect: 'mssql',
-  port : 1433,
+  // dialectOptions: {
+  //   options: {
+  //     encrypt: false, // or true, depending on your setup
+  //     trustServerCertificate: true, // use this for self-signed certificates
+  //   },
+  // },
+  port: 1433,
   logging : false
 }
 );
