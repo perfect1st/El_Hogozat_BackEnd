@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize");
 require("dotenv/config");
 
-module.exports = new Sequelize('ladycareyear012024', 'sa', '123456aA@', {
-  host: '158.220.90.76',
+module.exports = new Sequelize(process.env.DB_Name, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_SERVER,
   dialect: 'mssql',
   dialectOptions: {
     options: {
