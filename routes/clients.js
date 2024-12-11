@@ -4,6 +4,11 @@ const Clients = require("../models/clients");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv/config")
+
+router.get("/r", async (req, res) => {
+    console.log("77777777777777777777777777777777")
+    })
+    
 router.get("/:id", async (req, res) => {
    
     try {
@@ -53,7 +58,7 @@ router.post("/register", async (req, res) => {
             cln_L2: branchId, // رقم الفرع
             cln_L4: serialNumber, // رقم مسلسل
             cln_email: email, // البريد الألكتروني
-            cln_pass: bcrypt.hashSync(password , 10), // الباسورد
+            // cln_pass: bcrypt.hashSync(password , 10), // الباسورد
             cln_username: userName, // اسم المستخدم
             cln_birthdate: date, // تاريخ الميلاد
             cln_RegNum: regNum, // رقم الهويه
@@ -81,19 +86,20 @@ router.post("/login", async (req, res) => {
 
     try {
 
-        const { email , password } = req.body;
-        let userFound = await Clients.findOne({where : {cln_email : email}});
-        if(!userFound){  return res.status(400).send({message : "هذا المستخدم غير متاح"});   }
-        if(userFound && !bcrypt.compareSync(password , userFound.cln_pass) ){
-            return res.status(400).send({message : "من فضلك تأكد من الباسورد اذا كان صحيحا"});
-        }
+        const { mobile , password } = req.body;
+        let userFound = await Clients.findOne({where : {cln_mobl : mobile}});
+        if(!userFound){  return res.status(400).send({message : "رقم الهاتف غير صحيح"});   }
+       
+        // if(userFound && !bcrypt.compareSync(password , userFound.cln_pass) ){
+        //     return res.status(400).send({message : "من فضلك تأكد من الباسورد اذا كان صحيحا"});
+        // }
 
         const token = jwt.sign(
             {
             cln_L4: userFound.cln_L4,
             cln_username: userFound.cln_username,
             cln_email: userFound.cln_email,
-        },
+        }, 
          process.env.secret );
 
           return  res.status(200).send( { ...userFound.dataValues, token } );

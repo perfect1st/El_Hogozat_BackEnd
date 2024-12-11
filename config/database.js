@@ -11,7 +11,7 @@ module.exports = new Sequelize(process.env.DB_Name, process.env.DB_USER, process
       enableArithAbort: true
     }
   },
-  port: 1433,
+  // port: 1433,
   logging: false
 }
 );
