@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Categories = require("../models/categories");
+const Categories = require("../models/category");
 router.get("/", async (req, res) => {
 
     try {
@@ -13,7 +13,6 @@ router.get("/", async (req, res) => {
     } catch (error) {
         return res.status(500).send({ message: error || "حدثت مشكله ", });
     }
-    res.status(200).json(categories)
 
 });
 

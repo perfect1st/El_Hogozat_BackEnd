@@ -1,25 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const Clients = require("../models/clients");
+const Clients = require("../models/client");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv/config")
 
-router.get("/r", async (req, res) => {
-    console.log("77777777777777777777777777777777")
-    })
-    
+
 router.get("/:id", async (req, res) => {
-   
+
     try {
         const clients = await Clients.findOne({ where: { cln_L4: req.params.id } });
-        if(!clients){
-            return res.status(400).json({message : "لا يوجد مستخدمين"});
+        if (!clients) {
+            return res.status(400).json({ message: "لا يوجد مستخدمين" });
         }
         res.status(200).json(clients)
 
     } catch (error) {
-        return res.status(500).send({ message: error || "حدثت مشكله ", });   
+        return res.status(500).send({ message: error || "حدثت مشكله ", });
     }
 
 });
@@ -29,7 +26,7 @@ router.post("/register", async (req, res) => {
 
     try {
 
-        const { branchId, email, userName, mobile, regNum, birthDate, gender , password } = req.body;
+        const { branchId, email, userName, mobile, regNum, birthDate, gender, password } = req.body;
 
         ///////////////////////////////////////////////////////////////////////////////////////////// Check  
 
@@ -74,7 +71,7 @@ router.post("/register", async (req, res) => {
 
         const clientObject = await Clients.create(clientData);
 
-        return  res.status(201).send(clientObject);
+        return res.status(201).send(clientObject);
 
     } catch (error) {
         return res.status(500).send({ message: error || "حدثت مشكله اثناء عمليه الأضافه", });
@@ -86,23 +83,23 @@ router.post("/login", async (req, res) => {
 
     try {
 
-        const { mobile , password } = req.body;
-        let userFound = await Clients.findOne({where : {cln_mobl : mobile}});
-        if(!userFound){  return res.status(400).send({message : "رقم الهاتف غير صحيح"});   }
-       
+        const { mobile, password } = req.body;
+        let userFound = await Clients.findOne({ where: { cln_mobl: mobile } });
+        if (!userFound) { return res.status(400).send({ message: "رقم الهاتف غير صحيح" }); }
+
         // if(userFound && !bcrypt.compareSync(password , userFound.cln_pass) ){
         //     return res.status(400).send({message : "من فضلك تأكد من الباسورد اذا كان صحيحا"});
         // }
 
         const token = jwt.sign(
             {
-            cln_L4: userFound.cln_L4,
-            cln_username: userFound.cln_username,
-            cln_email: userFound.cln_email,
-        }, 
-         process.env.secret );
+                cln_L4: userFound.cln_L4,
+                cln_username: userFound.cln_username,
+                cln_email: userFound.cln_email,
+            },
+            process.env.secret);
 
-          return  res.status(200).send( { ...userFound.dataValues, token } );
+        return res.status(200).send({ ...userFound.dataValues, token });
 
     } catch (error) {
         return res.status(500).send({ message: error || "حدثت مشكله اثناء عمليه الأضافه", });
